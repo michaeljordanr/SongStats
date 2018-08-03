@@ -38,6 +38,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             tools:text="media name"
+            android:text="@{stats.name}"
             app:layout_constraintBottom_toBottomOf="@+id/iv_most_listened"
             app:layout_constraintStart_toEndOf="@+id/iv_most_listened"
             app:layout_constraintTop_toTopOf="@+id/iv_most_listened" />
@@ -47,6 +48,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="000"
+            android:text="@{stats.timesListenedString}"
             app:layout_constraintBottom_toBottomOf="@+id/tv_detail_name"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/tv_detail_name"
