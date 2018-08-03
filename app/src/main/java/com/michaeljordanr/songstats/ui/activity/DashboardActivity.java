@@ -1,6 +1,7 @@
 package com.michaeljordanr.songstats.ui.activity;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,11 +13,12 @@ import com.michaeljordanr.songstats.adapter.DashboardAdapter;
 import com.michaeljordanr.songstats.databinding.ActivityDashboardBinding;
 import com.michaeljordanr.songstats.model.Stats;
 import com.michaeljordanr.songstats.ui.viewmodel.StatsViewModel;
+import com.michaeljordanr.songstats.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class DashboardActivity extends AppCompatActivity {
+public class DashboardActivity extends AppCompatActivity implements DashboardAdapter.DashboardAdapterOnClickListener{
 
     private ActivityDashboardBinding binding;
     private StatsViewModel statsViewModel;
@@ -32,7 +34,7 @@ public class DashboardActivity extends AppCompatActivity {
 
         statsViewModel = ViewModelProviders.of(this).get(StatsViewModel.class);
 
-        adapter = new DashboardAdapter(getBaseContext());
+        adapter = new DashboardAdapter(this, this);
         binding.rvStats.setAdapter(adapter);
         binding.rvStats.setLayoutManager(new LinearLayoutManager(this));
 
@@ -55,4 +57,10 @@ public class DashboardActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onClick(String type) {
+        Intent intent = new Intent(this, DetailActivity.class);
+        intent.putExtra(Constants.STATS_DETAIL_TYPE, type);
+        startActivity(intent);
+    }
 }

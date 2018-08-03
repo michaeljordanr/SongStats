@@ -22,8 +22,6 @@ public class StatsViewModel extends AndroidViewModel {
 
     private LiveData<List<Stats>> observableStatsDetail;
 
-    private MutableLiveData<List<Stats>> observableMostListened;
-
     public StatsViewModel(@NonNull Application application) {
         super(application);
         repository = ((BasicApplication) application).getRepository();
@@ -41,7 +39,6 @@ public class StatsViewModel extends AndroidViewModel {
 
 
     public List<Stats> getMostListened(){
-        observableMostListened = new MutableLiveData<>();
         List<Stats> statsList = new ArrayList<>();
 
         Stats artistStats = repository.getMostListenedStatsByType(StatsType.STATS_TYPE_ARTIST);

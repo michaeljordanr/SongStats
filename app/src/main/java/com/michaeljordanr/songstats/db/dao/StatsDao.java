@@ -25,7 +25,8 @@ public interface StatsDao {
 
     @Query("SELECT id, name, type, imageUrl, count(*) AS count from stats " +
             "WHERE type = :type " +
-            "GROUP BY name")
+            "GROUP BY name " +
+            "ORDER BY count(*) DESC")
     LiveData<List<Stats>> getStatsByType(String type);
 
     @Query("SELECT id, name, type, imageUrl, count(*) AS count from stats " +

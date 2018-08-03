@@ -11,5 +11,5 @@
     <string name="com_spotify_sdk_redirect_scheme">spotify</string>
     <string name="com_spotify_sdk_redirect_host">songstats</string>
 
-    <string name="detail_stats_title">Most listened %s</string>
+    <string name="detail_stats_title">Most listened %ss</string>
 </resources>

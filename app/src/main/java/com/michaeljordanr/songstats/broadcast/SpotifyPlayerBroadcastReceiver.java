@@ -22,8 +22,6 @@ public class SpotifyPlayerBroadcastReceiver extends BroadcastReceiver {
         String action = intent.getAction();
 
         if (action != null && action.equals(METADATA_CHANGED)) {
-
-
             String trackId = intent.getStringExtra("id");
             String artistName = intent.getStringExtra("artist");
             String albumName = intent.getStringExtra("album");
