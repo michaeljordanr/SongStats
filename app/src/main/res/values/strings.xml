@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">SongStats</string>
+
+    <string name="back_button_content_descriptor">Back Button</string>
+    <string name="settings_button_content_descriptor">Settings Button</string>
+
+    <string name="stats_type_artist">Artist</string>
+    <string name="stats_type_album">Album</string>
+    <string name="stats_type_track">Track</string>
+
+    <string name="com_spotify_sdk_redirect_scheme">spotify</string>
+    <string name="com_spotify_sdk_redirect_host">songstats</string>
+
+    <string name="detail_stats_title">Most listened %s</string>
+</resources>
