@@ -2,30 +2,32 @@ package com.michaeljordanr.songstats.model;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
-import com.michaeljordanr.songstats.utils.StatsType;
+import java.util.Date;
 
-@Entity (tableName = "stats")
+@Entity(tableName = "stats")
 public class Stats {
 
-    @PrimaryKey (autoGenerate = true)
+    @PrimaryKey(autoGenerate = true)
     private int id;
+    private String trackId;
     private String name;
     private String type;
     @ColumnInfo(name = "count")
     private int timesListened;
     private String imageUrl;
+    private Date creationDate;
 
     public Stats() {
     }
 
-    @Ignore
-    public Stats(String name, String type, String imageUrl) {
-        this.name = name;
-        this.type = type;
-        this.imageUrl = imageUrl;
+    public String getTrackId() {
+        return trackId;
+    }
+
+    public void setTrackId(String trackId) {
+        this.trackId = trackId;
     }
 
     public int getId() {
@@ -56,12 +58,12 @@ public class Stats {
         return timesListened;
     }
 
-    public String getTimesListenedString() {
-        return String.valueOf(timesListened);
-    }
-
     public void setTimesListened(int timesListened) {
         this.timesListened = timesListened;
+    }
+
+    public String getTimesListenedString() {
+        return String.valueOf(timesListened);
     }
 
     public String getImageUrl() {
@@ -70,5 +72,13 @@ public class Stats {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
     }
 }

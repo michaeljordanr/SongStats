@@ -3,68 +3,88 @@ package com.michaeljordanr.songstats.ui.viewmodel;
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 
 import com.michaeljordanr.songstats.BasicApplication;
 import com.michaeljordanr.songstats.model.Stats;
+import com.michaeljordanr.songstats.repository.SpotifyRepository;
 import com.michaeljordanr.songstats.repository.StatsRepository;
 import com.michaeljordanr.songstats.utils.StatsType;
+import com.spotify.sdk.android.authentication.AuthenticationRequest;
+import com.spotify.sdk.android.authentication.AuthenticationResponse;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.michaeljordanr.songstats.utils.Constants.CLIENT_ID;
+
 public class StatsViewModel extends AndroidViewModel {
 
-    private StatsRepository repository;
+    private StatsRepository statsRepository;
+    private SpotifyRepository spotifyRepository;
 
-    private LiveData<List<Stats>> obs;
-
-    private LiveData<List<Stats>> observableStatsDetail;
+    private LiveData<List<Stats>> statsObs;
 
     public StatsViewModel(@NonNull Application application) {
         super(application);
-        repository = ((BasicApplication) application).getRepository();
+        statsRepository = ((BasicApplication) application).getStatsRepository();
+        spotifyRepository = ((BasicApplication) application).getSpotifyRepository();
         getMostListened();
-        obs = repository.getStats();
+        statsObs = statsRepository.getStats();
     }
 
-    public void insert(Stats stats){
-        repository.insert(stats);
+    public void insert(Stats stats) {
+        statsRepository.insert(stats);
     }
 
-    public void deleteAll(){
-        repository.deleteAll();
+    public void deleteAll() {
+        statsRepository.deleteAll();
     }
 
 
-    public List<Stats> getMostListened(){
+    public List<Stats> getMostListened() {
         List<Stats> statsList = new ArrayList<>();
 
-        Stats artistStats = repository.getMostListenedStatsByType(StatsType.STATS_TYPE_ARTIST);
-        if(artistStats != null) {
+        Stats artistStats = statsRepository.getMostListenedStatsByType(StatsType.STATS_TYPE_ARTIST);
+        if (artistStats != null) {
             statsList.add(artistStats);
         }
 
-        Stats albumStats = repository.getMostListenedStatsByType(StatsType.STATS_TYPE_ALBUM);
-        if(albumStats != null) {
+        Stats albumStats = statsRepository.getMostListenedStatsByType(StatsType.STATS_TYPE_ALBUM);
+        if (albumStats != null) {
             statsList.add(albumStats);
         }
 
-        Stats trackStats = repository.getMostListenedStatsByType(StatsType.STATS_TYPE_TRACK);
-        if(trackStats != null){
+        Stats trackStats = statsRepository.getMostListenedStatsByType(StatsType.STATS_TYPE_TRACK);
+        if (trackStats != null) {
             statsList.add(trackStats);
         }
 
         return statsList;
     }
 
-    public LiveData<List<Stats>> getStatsByType(String type){
-        return repository.getStatsByType(type);
+    public AuthenticationRequest getAuthenticationRequest(AuthenticationResponse.Type type, String scheme, String host) {
+        return new AuthenticationRequest.Builder(CLIENT_ID, type, getRedirectUri(scheme, host).toString())
+                .setShowDialog(false)
+
+                .build();
     }
 
-    public LiveData<List<Stats>> getObs() {
-        return obs;
+    private Uri getRedirectUri(String scheme, String host) {
+        return new Uri.Builder()
+                .scheme(scheme)
+                .authority(host)
+                .build();
+    }
+
+
+    public LiveData<List<Stats>> getStatsByType(String type) {
+        return statsRepository.getStatsByType(type);
+    }
+
+    public LiveData<List<Stats>> getStatsObs() {
+        return statsObs;
     }
 
 }

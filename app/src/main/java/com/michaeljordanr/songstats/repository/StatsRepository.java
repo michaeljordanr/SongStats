@@ -2,9 +2,10 @@ package com.michaeljordanr.songstats.repository;
 
 import android.arch.lifecycle.LiveData;
 
-import com.michaeljordanr.songstats.db.AppDataBase;
+import com.michaeljordanr.songstats.data.local.AppDataBase;
 import com.michaeljordanr.songstats.model.Stats;
 
+import java.util.Calendar;
 import java.util.List;
 
 public class StatsRepository {
@@ -39,7 +40,13 @@ public class StatsRepository {
         return appDataBase.statsDao().getStatsByType(type);
     }
 
+    public List<Stats> getStatsByTypeWidget(String type){
+        return appDataBase.statsDao().getStatsByTypeWidget(type);
+    }
+
     public void insert(Stats stats){
+        Calendar calendar = Calendar.getInstance();
+        stats.setCreationDate(calendar.getTime());
         appDataBase.statsDao().save(stats);
     }
 

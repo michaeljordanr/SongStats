@@ -7,6 +7,10 @@ public class Constants {
     public static final int AUTH_CODE_REQUEST_CODE = 0x11;
 
     public static final String METADATA_CHANGED = "com.spotify.music.metadatachanged";
+    public static final String BOOT_COMPLETED = "android.intent.action.BOOT_COMPLETED";
 
     public static final String STATS_DETAIL_TYPE = "stats_detail_params";
+
+    public static final String SONGSTATSPREFERENCES = "songstats_preferences";
+    public static final String SPOTIFY_TOKEN = "spotify_token";
 }

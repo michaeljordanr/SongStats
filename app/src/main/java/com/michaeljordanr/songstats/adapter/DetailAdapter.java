@@ -1,5 +1,6 @@
 package com.michaeljordanr.songstats.adapter;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -7,12 +8,18 @@ import android.view.ViewGroup;
 
 import com.michaeljordanr.songstats.databinding.ItemDetailRecyclerViewBinding;
 import com.michaeljordanr.songstats.model.Stats;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class DetailAdapter extends RecyclerView.Adapter<DetailAdapter.DetailViewHolder>{
+public class DetailAdapter extends RecyclerView.Adapter<DetailAdapter.DetailViewHolder> {
 
+    private Context context;
     private List<Stats> statsList;
+
+    public DetailAdapter(Context context) {
+        this.context = context;
+    }
 
     @NonNull
     @Override
@@ -32,11 +39,11 @@ public class DetailAdapter extends RecyclerView.Adapter<DetailAdapter.DetailView
 
     @Override
     public int getItemCount() {
-        if(statsList == null) return 0;
+        if (statsList == null) return 0;
         return statsList.size();
     }
 
-    public void setData(List<Stats> statsList){
+    public void setData(List<Stats> statsList) {
         this.statsList = statsList;
         notifyDataSetChanged();
     }
@@ -49,9 +56,13 @@ public class DetailAdapter extends RecyclerView.Adapter<DetailAdapter.DetailView
             this.binding = binding;
         }
 
-        void bind(Stats stats){
+        void bind(Stats stats) {
             binding.setStats(stats);
             binding.executePendingBindings();
+
+            Picasso.with(context)
+                    .load(stats.getImageUrl())
+                    .into(binding.ivMostListened);
         }
     }
 }

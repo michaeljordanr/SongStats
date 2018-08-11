@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "1018786628422",
+    "firebase_url": "https://songstats-2b255.firebaseio.com",
+    "project_id": "songstats-2b255",
+    "storage_bucket": "songstats-2b255.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1018786628422:android:b5c84c2d73ec19a7",
+        "android_client_info": {
+          "package_name": "com.michaeljordanr.songstats"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1018786628422-n61qq7thnlofrsr21lnmgm6lu1q628gb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD18AxlhUJpfBnFkNaWN8kBs-KZTHx4-dw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

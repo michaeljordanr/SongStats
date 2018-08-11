@@ -10,19 +10,15 @@ import android.view.ViewGroup;
 import com.michaeljordanr.songstats.databinding.ItemDashboardRecyclerViewBinding;
 import com.michaeljordanr.songstats.model.Stats;
 import com.michaeljordanr.songstats.utils.StatsType;
+import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.DashboardViewHolder> {
 
+    private final DashboardAdapterOnClickListener listener;
     private Context context;
     private List<Stats> statsList;
-    private final DashboardAdapterOnClickListener listener;
-
-    public interface DashboardAdapterOnClickListener{
-        void onClick(String type);
-    }
 
     public DashboardAdapter(Context context, DashboardAdapterOnClickListener listener) {
         this.context = context;
@@ -47,16 +43,20 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Dash
 
     @Override
     public int getItemCount() {
-        if(statsList == null) return 0;
+        if (statsList == null) return 0;
         return statsList.size();
     }
 
-    public void setData(List<Stats> statsList){
+    public void setData(List<Stats> statsList) {
         this.statsList = statsList;
         notifyDataSetChanged();
     }
 
-    class DashboardViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public interface DashboardAdapterOnClickListener {
+        void onClick(String type);
+    }
+
+    class DashboardViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private final ItemDashboardRecyclerViewBinding binding;
 
         DashboardViewHolder(ItemDashboardRecyclerViewBinding binding) {
@@ -65,11 +65,15 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Dash
             this.binding.getRoot().setOnClickListener(this);
         }
 
-        void bind(Stats stats){
+        void bind(Stats stats) {
             binding.setStats(stats);
             binding.executePendingBindings();
 
             binding.tvTitle.setText(StatsType.getTypeDescription(context, stats.getType()));
+
+            Picasso.with(context)
+                    .load(stats.getImageUrl())
+                    .into(binding.ivMostListened);
         }
 
         @Override

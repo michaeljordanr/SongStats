@@ -1,15 +1,29 @@
 <resources>
     <string name="app_name">SongStats</string>
 
+    <string name="logo_content_descriptor">Logo on Splash Screen</string>
     <string name="back_button_content_descriptor">Back Button</string>
     <string name="settings_button_content_descriptor">Settings Button</string>
+    <string name="navigation_widget_content_descriptor">Navigation Button</string>
 
+    <string name="settings">Settings</string>
     <string name="stats_type_artist">Artist</string>
     <string name="stats_type_album">Album</string>
     <string name="stats_type_track">Track</string>
+    <string name="period_stats">Last 7 days</string>
+    <string name="times_listened">times listened:</string>
 
     <string name="com_spotify_sdk_redirect_scheme">spotify</string>
     <string name="com_spotify_sdk_redirect_host">songstats</string>
 
     <string name="detail_stats_title">Most listened %ss</string>
+
+    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="title_activity_settings">Settings</string>
+
+    <string name="pref_spotify_integration_title">Spotify integration</string>
+    <string name="pref_on_spotify_integration_label">On</string>
+    <string name="pref_off_spotify_integration_label">Off</string>
+    <string name="pref_spotify_integration_key" translatable="false">spotify_integration</string>
+
 </resources>

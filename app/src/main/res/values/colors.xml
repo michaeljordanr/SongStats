@@ -5,4 +5,6 @@
     <color name="colorAccent">#FFC82C</color>
 
     <color name="background">#E9E9E9</color>
+    <color name="rounded_image_view_border_color">#333333</color>
+    <color name="text_color">#48535F</color>
 </resources>

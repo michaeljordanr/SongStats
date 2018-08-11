@@ -1,6 +1,15 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        config {
+            keyAlias 'songstats'
+            keyPassword 'songstats'
+            storeFile file("/$rootDir/songstats_key.jks")
+            storePassword 'songstats'
+        }
+    }
+
     compileSdkVersion 27
     defaultConfig {
         applicationId "com.michaeljordanr.songstats"
@@ -12,12 +21,13 @@ android {
     }
     buildTypes {
         release {
+            signingConfig = signingConfigs.config
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
 
-    dataBinding{
+    dataBinding {
         enabled = true
     }
 
@@ -29,27 +39,33 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation ('com.android.support:appcompat-v7:27.1.1')
-    implementation ('com.android.support:design:27.1.1')
-    implementation ('com.android.support:cardview-v7:27.1.1')
+    implementation('com.android.support:appcompat-v7:27.1.1')
+    implementation('com.android.support:design:27.1.1')
+    implementation('com.android.support:cardview-v7:27.1.1')
     implementation 'com.android.support.constraint:constraint-layout:1.1.2'
-    implementation 'com.makeramen:roundedimageview:2.3.0'
+    implementation 'com.google.firebase:firebase-ads:15.0.1'
+    implementation 'com.google.firebase:firebase-core:16.0.1'
 
-    implementation 'com.squareup.okhttp3:okhttp:3.9.1'
     implementation 'com.spotify.android:auth:1.1.0'
-    implementation 'com.google.android.gms:play-services-analytics:16.0.1'
+    implementation 'com.makeramen:roundedimageview:2.3.0'
+    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
+    implementation 'com.squareup.picasso:picasso:2.5.2'
 
     implementation 'android.arch.lifecycle:runtime:1.1.1'
     implementation 'android.arch.lifecycle:extensions:1.1.1'
     implementation 'android.arch.lifecycle:compiler:1.1.1'
+    implementation 'com.android.support:support-v4:27.1.1'
     annotationProcessor 'android.arch.lifecycle:compiler:1.1.1'
 
     implementation 'android.arch.persistence.room:runtime:1.1.1'
     annotationProcessor 'android.arch.persistence.room:compiler:1.1.1'
 
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation ('com.android.support.test:runner:1.0.2'){
+    androidTestImplementation('com.android.support.test:runner:1.0.2') {
         exclude group: 'com.android.support:customtabs:27.0.2'
     }
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 }
+
+apply plugin: 'com.google.gms.google-services'

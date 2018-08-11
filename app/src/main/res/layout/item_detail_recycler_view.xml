@@ -12,47 +12,49 @@
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="4dp">
+        android:padding="@dimen/default_padding_8">
 
         <com.makeramen.roundedimageview.RoundedImageView
             android:id="@+id/iv_most_listened"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_marginStart="8dp"
+            android:layout_width="@dimen/rounded_image_view_detail_size"
+            android:layout_height="@dimen/rounded_image_view_detail_size"
+            android:layout_marginStart="@dimen/default_margin_8"
             android:background="@color/colorPrimary"
             android:scaleType="centerCrop"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:riv_border_color="#333333"
-            app:riv_border_width="2dp"
-            app:riv_corner_radius="30dp"
+            app:riv_border_color="@color/rounded_image_view_border_color"
+            app:riv_border_width="@dimen/rounded_image_view_dashboard_border_width"
+            app:riv_corner_radius="@dimen/rounded_image_view_dashboard_corner_radius"
             app:riv_mutate_background="true"
             app:riv_oval="true"
             app:riv_tile_mode="repeat" />
 
         <TextView
             android:id="@+id/tv_detail_name"
-            android:layout_width="273dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            tools:text="media name"
+            android:layout_marginBottom="@dimen/default_margin_8"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="@dimen/default_margin_8"
+            android:layout_marginTop="@dimen/default_margin_8"
             android:text="@{stats.name}"
             app:layout_constraintBottom_toBottomOf="@+id/iv_most_listened"
+            app:layout_constraintEnd_toStartOf="@+id/tv_count"
             app:layout_constraintStart_toEndOf="@+id/iv_most_listened"
-            app:layout_constraintTop_toTopOf="@+id/iv_most_listened" />
+            app:layout_constraintTop_toTopOf="@+id/iv_most_listened"
+            tools:text="media name" />
 
         <TextView
             android:id="@+id/tv_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="000"
             android:text="@{stats.timesListenedString}"
+            android:layout_marginEnd="@dimen/default_margin_8"
             app:layout_constraintBottom_toBottomOf="@+id/tv_detail_name"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/tv_detail_name"
-            app:layout_constraintTop_toTopOf="@+id/tv_detail_name" />
+            app:layout_constraintTop_toTopOf="@+id/tv_detail_name"
+            tools:text="000" />
 
     </android.support.constraint.ConstraintLayout>
 </layout>
