@@ -76,9 +76,8 @@ SharedPreferences.OnSharedPreferenceChangeListener{
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         sharedPreferences.registerOnSharedPreferenceChangeListener(this);
-        SharedPreferences prefs = getSharedPreferences(Constants.SONGSTATSPREFERENCES, MODE_PRIVATE);
 
-        if (prefs.getString(Constants.SPOTIFY_TOKEN, "").isEmpty()) {
+        if (sharedPreferences.getString(Constants.SPOTIFY_TOKEN, "").isEmpty()) {
             if(sharedPreferences.getBoolean(getString(R.string.pref_spotify_integration_key), true)) {
                 onRequestSpotifyToken();
             }

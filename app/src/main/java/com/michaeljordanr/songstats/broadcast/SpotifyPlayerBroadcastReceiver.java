@@ -17,6 +17,7 @@ import com.michaeljordanr.songstats.repository.StatsRepository;
 import com.michaeljordanr.songstats.ui.activity.DashboardActivity;
 import com.michaeljordanr.songstats.utils.Constants;
 import com.michaeljordanr.songstats.utils.StatsType;
+import com.michaeljordanr.songstats.widget.StatsIntentService;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -119,6 +120,7 @@ public class SpotifyPlayerBroadcastReceiver extends BroadcastReceiver {
                         if (resp != null) {
                             stats.setImageUrl(getBetterThumb(resp.getAlbumResponse().getImages()).getUrl());
                             statsRepository.insert(stats);
+                            StatsIntentService.startActionFetchStats(context);
                         } else {
                             try {
                                 String stringResponse = response.errorBody().string();

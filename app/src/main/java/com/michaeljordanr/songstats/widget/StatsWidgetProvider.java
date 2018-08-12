@@ -47,47 +47,48 @@ public class StatsWidgetProvider extends AppWidgetProvider {
 
     public static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId, int i) {
         position = i;
-        List<Stats> stats = statsList.get(position);
+        if(statsList.size() > 0) {
+            List<Stats> stats = statsList.get(position);
 
-        // Create the RemoteViews
-        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_stats);
-        views.setTextViewText(R.id.tv_recipe_title, StatsType.getTypeDescription(context, stats.get(0).getType()));
+            // Create the RemoteViews
+            RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_stats);
+            views.setTextViewText(R.id.tv_recipe_title, StatsType.getTypeDescription(context, stats.get(0).getType()));
 
-        // Set's up the previously action
-        if (position > 0) {
-            views.setViewVisibility(R.id.iv_previously, View.VISIBLE);
-            Intent previouslyIntent = new Intent(context, varClass);
-            previouslyIntent.setAction(ACTION_PREVIOUSLY);
-            PendingIntent previouslyPendingIntent = PendingIntent.getBroadcast(context, 0, previouslyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-            views.setOnClickPendingIntent(R.id.iv_previously, previouslyPendingIntent);
-        } else {
-            views.setViewVisibility(R.id.iv_previously, View.GONE);
+            // Set's up the previously action
+            if (position > 0) {
+                views.setViewVisibility(R.id.iv_previously, View.VISIBLE);
+                Intent previouslyIntent = new Intent(context, varClass);
+                previouslyIntent.setAction(ACTION_PREVIOUSLY);
+                PendingIntent previouslyPendingIntent = PendingIntent.getBroadcast(context, 0, previouslyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                views.setOnClickPendingIntent(R.id.iv_previously, previouslyPendingIntent);
+            } else {
+                views.setViewVisibility(R.id.iv_previously, View.GONE);
+            }
+
+            // Set's up the next action
+            if (position < statsList.size() - 1) {
+                views.setViewVisibility(R.id.iv_next, View.VISIBLE);
+                Intent nextIntent = new Intent(context, varClass);
+                nextIntent.setAction(ACTION_NEXT);
+                PendingIntent nextPendingIntent = PendingIntent.getBroadcast(context, 0, nextIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                views.setOnClickPendingIntent(R.id.iv_next, nextPendingIntent);
+            } else {
+                views.setViewVisibility(R.id.iv_next, View.GONE);
+            }
+
+            // Set's up the listview
+            Intent adapterIntent = new Intent(context, com.michaeljordanr.songstats.widget.StatsWidgetRemoteViewsService.class);
+            views.setRemoteAdapter(R.id.lv_stats, adapterIntent);
+
+            // template to handle the click listener for each item
+            Intent clickIntentTemplate = new Intent(context, DetailActivity.class);
+            PendingIntent clickPendingIntentTemplate = TaskStackBuilder.create(context)
+                    .addNextIntentWithParentStack(clickIntentTemplate)
+                    .getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+            views.setPendingIntentTemplate(R.id.lv_stats, clickPendingIntentTemplate);
+
+            appWidgetManager.updateAppWidget(appWidgetId, views);
         }
-
-        // Set's up the next action
-        if (position < statsList.size() - 1) {
-            views.setViewVisibility(R.id.iv_next, View.VISIBLE);
-            Intent nextIntent = new Intent(context, varClass);
-            nextIntent.setAction(ACTION_NEXT);
-            PendingIntent nextPendingIntent = PendingIntent.getBroadcast(context, 0, nextIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-            views.setOnClickPendingIntent(R.id.iv_next, nextPendingIntent);
-        } else {
-            views.setViewVisibility(R.id.iv_next, View.GONE);
-        }
-
-        // Set's up the listview
-        Intent adapterIntent = new Intent(context, com.michaeljordanr.songstats.widget.StatsWidgetRemoteViewsService.class);
-        views.setRemoteAdapter(R.id.lv_stats, adapterIntent);
-
-        // template to handle the click listener for each item
-        Intent clickIntentTemplate = new Intent(context, DetailActivity.class);
-        PendingIntent clickPendingIntentTemplate = TaskStackBuilder.create(context)
-                .addNextIntentWithParentStack(clickIntentTemplate)
-                .getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-        views.setPendingIntentTemplate(R.id.lv_stats, clickPendingIntentTemplate);
-
-        appWidgetManager.updateAppWidget(appWidgetId, views);
-
     }
 
     @Override
