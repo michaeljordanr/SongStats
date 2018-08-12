@@ -48,27 +48,30 @@ public class SpotifyPlayerBroadcastReceiver extends BroadcastReceiver {
         String action = intent.getAction();
 
         if (action != null && action.equals(METADATA_CHANGED)) {
-            String trackId = intent.getStringExtra("id")
-                    .replace("spotify:track:", "");
-            String artistName = intent.getStringExtra("artist");
-            String albumName = intent.getStringExtra("album");
-            String trackName = intent.getStringExtra("track");
+            if (sharedPreferences.getBoolean(context.getString(R.string.pref_spotify_integration_key),
+                    context.getResources().getBoolean(R.bool.pref_spotify_integration_default))) {
+                String trackId = intent.getStringExtra("id")
+                        .replace("spotify:track:", "");
+                String artistName = intent.getStringExtra("artist");
+                String albumName = intent.getStringExtra("album");
+                String trackName = intent.getStringExtra("track");
 
-            List<Stats> statsList = new ArrayList<>();
+                List<Stats> statsList = new ArrayList<>();
 
-            if (!artistName.isEmpty()) {
-                statsList.add(getArtistStats(trackId, artistName));
+                if (!artistName.isEmpty()) {
+                    statsList.add(getArtistStats(trackId, artistName));
+                }
+
+                if (!albumName.isEmpty()) {
+                    statsList.add(getAlbumStats(trackId, albumName));
+                }
+
+                if (!trackName.isEmpty()) {
+                    statsList.add(getTrackStats(trackId, trackName));
+                }
+
+                save(statsList);
             }
-
-            if (!albumName.isEmpty()) {
-                statsList.add(getAlbumStats(trackId, albumName));
-            }
-
-            if (!trackName.isEmpty()) {
-                statsList.add(getTrackStats(trackId, trackName));
-            }
-
-            save(statsList);
         }
     }
 
@@ -97,6 +100,9 @@ public class SpotifyPlayerBroadcastReceiver extends BroadcastReceiver {
     }
 
     private String getToken() {
+        if(sharedPreferences.getString(Constants.SPOTIFY_TOKEN, "").isEmpty()){
+            refreshToken();
+        }
         return sharedPreferences.getString(Constants.SPOTIFY_TOKEN, "");
     }
 
@@ -108,44 +114,40 @@ public class SpotifyPlayerBroadcastReceiver extends BroadcastReceiver {
 
     private void save(List<Stats> statsList) {
         final boolean[] error = {false};
+        String token = getToken();
 
         for(Stats stats : statsList) {
-            Call<SpotifyResponse> call = spotifyRepository.getImages(stats.getTrackId(), getToken());
+            if(!token.isEmpty()) {
+                Call<SpotifyResponse> call = spotifyRepository.getImages(stats.getTrackId(), token);
 
-            if (call != null) {
-                call.enqueue(new Callback<SpotifyResponse>() {
-                    @Override
-                    public void onResponse(Call<SpotifyResponse> call, Response<SpotifyResponse> response) {
-                        SpotifyResponse resp = response.body();
-                        if (resp != null) {
-                            stats.setImageUrl(getBetterThumb(resp.getAlbumResponse().getImages()).getUrl());
-                            statsRepository.insert(stats);
-                            StatsIntentService.startActionFetchStats(context);
-                        } else {
-                            try {
-                                String stringResponse = response.errorBody().string();
-                                Log.d("SONGSTATS", "ERROR: " + stringResponse);
-
+                if (call != null) {
+                    call.enqueue(new Callback<SpotifyResponse>() {
+                        @Override
+                        public void onResponse(Call<SpotifyResponse> call, Response<SpotifyResponse> response) {
+                            SpotifyResponse resp = response.body();
+                            if (resp != null) {
+                                stats.setImageUrl(getBetterThumb(resp.getAlbumResponse().getImages()).getUrl());
+                                statsRepository.insert(stats);
+                                StatsIntentService.startActionFetchStats(context);
+                            } else {
+                                Log.d("SONGSTATSD", "ERROR: " + response.errorBody());
                                 error[0] = true;
-
-                            } catch (IOException e) {
-                                e.printStackTrace();
                             }
                         }
-                    }
 
-                    @Override
-                    public void onFailure(Call<SpotifyResponse> call, Throwable t) {
-                        Log.d("SONGSTATS", "Something went wrong...");
-                    }
-                });
+                        @Override
+                        public void onFailure(Call<SpotifyResponse> call, Throwable t) {
+                            Log.d("SONGSTATSD", "Something went wrong...");
+                        }
+                    });
+                } else {
+                    error[0] = true;
+                }
             }
         }
 
         if(error[0]){
-            clearToken();
-            Intent intent = new Intent(context, DashboardActivity.class);
-            context.startActivity(intent);
+            refreshToken();
         }
     }
 
@@ -157,5 +159,11 @@ public class SpotifyPlayerBroadcastReceiver extends BroadcastReceiver {
         }
 
         return images.get(0);
+    }
+
+    private void refreshToken() {
+        clearToken();
+        Intent intent = new Intent(context, DashboardActivity.class);
+        context.startActivity(intent);
     }
 }

@@ -37,7 +37,7 @@ public class SpotifyRepository {
 
             return call;
         } else {
-            Log.d("SONGSTATS", "No token");
+            Log.d("SONGSTATSD", "No token");
         }
 
         return null;

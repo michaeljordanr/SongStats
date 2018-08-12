@@ -20,7 +20,7 @@ public class SettingsActivity extends AppCompatActivity {
 
         TextView tvTitle = toolbar.findViewById(R.id.tv_title_toolbar);
         ImageButton ibBack = toolbar.findViewById(R.id.ib_back);
-        tvTitle.setText(getString(R.string.settings));
+        tvTitle.setText(getString(R.string.settings).toUpperCase());
         ibBack.setOnClickListener(v -> finish());
 
         setSupportActionBar(toolbar);

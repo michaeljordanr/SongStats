@@ -122,6 +122,7 @@ SharedPreferences.OnSharedPreferenceChangeListener{
         final AuthenticationRequest request = statsViewModel
                 .getAuthenticationRequest(AuthenticationResponse.Type.TOKEN, scheme, host);
         AuthenticationClient.openLoginActivity(this, AUTH_TOKEN_REQUEST_CODE, request);
+        Log.d("SONGSTATSD", "retrieving token");
     }
 
     @Override
@@ -130,6 +131,7 @@ SharedPreferences.OnSharedPreferenceChangeListener{
         final AuthenticationResponse response = AuthenticationClient.getResponse(resultCode, data);
 
         if (AUTH_TOKEN_REQUEST_CODE == requestCode) {
+            Log.d("SONGSTATSD", "token: " + response.getAccessToken());
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putString(SPOTIFY_TOKEN, response.getAccessToken());
             editor.apply();
@@ -164,6 +166,10 @@ SharedPreferences.OnSharedPreferenceChangeListener{
         }
     }
 
+    /**
+     * When the user disable spotify integration
+     * the token is cleaned.
+     */
     private void clearToken() {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(SPOTIFY_TOKEN, "");
