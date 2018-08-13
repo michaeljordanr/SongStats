@@ -79,6 +79,7 @@ SharedPreferences.OnSharedPreferenceChangeListener{
 
         if (sharedPreferences.getString(Constants.SPOTIFY_TOKEN, "").isEmpty()) {
             if(sharedPreferences.getBoolean(getString(R.string.pref_spotify_integration_key), true)) {
+                Log.d("SONGSTATSD", "onCreate getToken");
                 onRequestSpotifyToken();
             }
         }
@@ -161,6 +162,7 @@ SharedPreferences.OnSharedPreferenceChangeListener{
             clearToken();
         } else {
             if(sharedPreferences.getString(Constants.SPOTIFY_TOKEN, "").isEmpty()) {
+                Log.d("SONGSTATSD", "sharedPreferenceChanged");
                 onRequestSpotifyToken();
             }
         }

@@ -100,16 +100,7 @@ public class SpotifyPlayerBroadcastReceiver extends BroadcastReceiver {
     }
 
     private String getToken() {
-        if(sharedPreferences.getString(Constants.SPOTIFY_TOKEN, "").isEmpty()){
-            refreshToken();
-        }
         return sharedPreferences.getString(Constants.SPOTIFY_TOKEN, "");
-    }
-
-    private void clearToken() {
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(SPOTIFY_TOKEN, "");
-        editor.apply();
     }
 
     private void save(List<Stats> statsList) {
@@ -147,7 +138,7 @@ public class SpotifyPlayerBroadcastReceiver extends BroadcastReceiver {
         }
 
         if(error[0]){
-            refreshToken();
+            Log.d("SONGSTATSD", "Something went wrong...");
         }
     }
 
@@ -159,11 +150,5 @@ public class SpotifyPlayerBroadcastReceiver extends BroadcastReceiver {
         }
 
         return images.get(0);
-    }
-
-    private void refreshToken() {
-        clearToken();
-        Intent intent = new Intent(context, DashboardActivity.class);
-        context.startActivity(intent);
     }
 }
